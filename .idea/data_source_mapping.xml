@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/04fe98d7-b1c9-4028-9700-8ed701a2efab/console.sql" value="04fe98d7-b1c9-4028-9700-8ed701a2efab" />
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/6e7dd82e-16d3-4961-b224-b08d1d076b4f/console.sql" value="6e7dd82e-16d3-4961-b224-b08d1d076b4f" />
+    <file url="file://$PROJECT_DIR$/devices-api-java-mvc/src/main/resources/db/migration/V1__create_devices_table.sql" value="04fe98d7-b1c9-4028-9700-8ed701a2efab" />
   </component>
 </project>
