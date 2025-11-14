@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: lucas
+      changes:
+        - createTable:
+            tableName: devices
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: external_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_time
+                  type: TIMESTAMPTZ
+                  constraints:
+                    nullable: false

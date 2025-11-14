@@ -2,6 +2,15 @@ spring:
   application:
     name: devices-api-kotlin-reactive
 
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
 # Default: local IDE run (DB via localhost:5433)
 ---
 spring:
@@ -20,15 +29,6 @@ spring:
     user: devices
     password: devices
 
-server:
-  port: 8081
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
 # Docker profile: DB hostname is 'kotlin-db'
 ---
 spring:
@@ -46,3 +46,4 @@ spring:
     url: jdbc:postgresql://kotlin-db:5432/devicesdb_rx
     user: devices
     password: devices
+    enabled: true    # keep off in docker for now so it doesn't crash
