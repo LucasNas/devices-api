@@ -1,0 +1,23 @@
+services:
+  java-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: devicesdb
+      POSTGRES_USER: devices
+      POSTGRES_PASSWORD: devices
+    ports:
+      - "5432:5432"
+    volumes:
+      - java_dbdata:/var/lib/postgresql/data
+
+  java-app:
+    build: .
+    depends_on:
+      - java-db
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+
+volumes:
+  java_dbdata:

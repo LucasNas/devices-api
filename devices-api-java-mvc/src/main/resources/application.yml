@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: devices-api-java-mvc
+
+  # Default profile: local IDE run (DB via localhost:5432)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devicesdb
+    username: devices
+    password: devices
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  # In Docker, the DB hostname is the service name 'java-db'
+  datasource:
+    url: jdbc:postgresql://java-db:5432/devicesdb
+    username: devices
+    password: devices

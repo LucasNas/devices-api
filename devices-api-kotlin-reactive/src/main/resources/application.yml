@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: devices-api-kotlin-reactive
+
+# Default: local IDE run (DB via localhost:5433)
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5433/devicesdb_rx
+    username: devices
+    password: devices
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    url: jdbc:postgresql://localhost:5433/devicesdb_rx
+    user: devices
+    password: devices
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# Docker profile: DB hostname is 'kotlin-db'
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  r2dbc:
+    url: r2dbc:postgresql://kotlin-db:5432/devicesdb_rx
+    username: devices
+    password: devices
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    url: jdbc:postgresql://kotlin-db:5432/devicesdb_rx
+    user: devices
+    password: devices

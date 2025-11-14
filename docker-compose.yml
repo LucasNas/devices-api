@@ -1,0 +1,43 @@
+services:
+  # ===== Java stack =====
+  java-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: devicesdb
+      POSTGRES_USER: devices
+      POSTGRES_PASSWORD: devices
+    ports: [ "5432:5432" ]
+    volumes: [ "java_dbdata:/var/lib/postgresql/data" ]
+
+  java-app:
+    build:
+      context: ./devices-api-java-mvc
+    depends_on:
+      - java-db
+    environment:
+      # Activate docker profile so the app talks to 'java-db' hostname
+      SPRING_PROFILES_ACTIVE: docker
+    ports: [ "8080:8080" ]
+
+  # ===== Kotlin stack =====
+  kotlin-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: devicesdb_rx
+      POSTGRES_USER: devices
+      POSTGRES_PASSWORD: devices
+    ports: [ "5433:5432" ]
+    volumes: [ "kotlin_dbdata:/var/lib/postgresql/data" ]
+
+  kotlin-app:
+    build:
+      context: ./devices-api-kotlin-reactive
+    depends_on:
+      - kotlin-db
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports: [ "8081:8081" ]
+
+volumes:
+  java_dbdata:
+  kotlin_dbdata:
