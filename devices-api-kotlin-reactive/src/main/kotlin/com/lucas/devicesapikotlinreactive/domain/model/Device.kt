@@ -21,5 +21,21 @@ data class Device(
                 state = state,
                 creationTime = OffsetDateTime.now()
             )
+
+        fun fromEvent(
+            externalId: UUID,
+            name: String,
+            brand: String,
+            state: DeviceState,
+            creationTime: OffsetDateTime
+        ): Device =
+            Device(
+                id = null,
+                externalId = externalId,
+                name = name,
+                brand = brand,
+                state = state,
+                creationTime = creationTime
+            )
     }
 }

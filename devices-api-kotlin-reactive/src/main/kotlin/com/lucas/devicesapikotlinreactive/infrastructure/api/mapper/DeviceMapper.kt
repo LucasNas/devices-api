@@ -1,4 +1,4 @@
-package com.lucas.devicesapikotlinreactive.infrastructure.api
+package com.lucas.devicesapikotlinreactive.infrastructure.api.mapper
 
 import com.lucas.devicesapikotlinreactive.domain.model.Device
 import com.lucas.devicesapikotlinreactive.infrastructure.api.dto.DeviceRequest
@@ -7,7 +7,7 @@ import com.lucas.devicesapikotlinreactive.infrastructure.api.dto.DeviceResponse
 object DeviceMapper {
 
     fun toDomain(req: DeviceRequest): Device =
-        Device.create(
+        Device.Companion.create(
             name = req.name,
             brand = req.brand,
             state = req.state

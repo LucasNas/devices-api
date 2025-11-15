@@ -30,19 +30,42 @@ public class Device {
     private OffsetDateTime creationTime;
 
     protected Device() {
-
     }
 
-    private Device(String name, String brand, DeviceState state) {
-        this.externalId = UUID.randomUUID();
+    private Device(UUID externalId,
+                   String name,
+                   String brand,
+                   DeviceState state,
+                   OffsetDateTime creationTime) {
+        this.externalId = externalId;
         this.name = name;
         this.brand = brand;
         this.state = state;
-        this.creationTime = OffsetDateTime.now();
+        this.creationTime = creationTime;
     }
 
-    public static Device create(String name, String brand, DeviceState state) {
-        return new Device(name, brand, state);
+    public static Device createNew(String name, String brand, DeviceState state) {
+        return new Device(
+                UUID.randomUUID(),
+                name,
+                brand,
+                state,
+                OffsetDateTime.now()
+        );
+    }
+
+    public static Device fromEvent(UUID externalId,
+                                   String name,
+                                   String brand,
+                                   DeviceState state,
+                                   OffsetDateTime creationTime) {
+        return new Device(
+                externalId,
+                name,
+                brand,
+                state,
+                creationTime
+        );
     }
 
     public Long getId() {

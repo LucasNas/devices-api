@@ -9,7 +9,7 @@ public final class DeviceMapper {
     private DeviceMapper() {}
 
     public static Device toNewEntity(DeviceRequest req) {
-        return Device.create(req.name(), req.brand(), req.state());
+        return Device.createNew(req.name(), req.brand(), req.state());
     }
 
     public static DeviceResponse toResponse(Device d) {

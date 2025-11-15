@@ -2,7 +2,6 @@ spring:
   application:
     name: devices-api-java-mvc
 
-  # Default profile: local IDE run (DB via localhost:5432)
   datasource:
     url: jdbc:postgresql://localhost:5432/devicesdb
     username: devices
@@ -25,13 +24,28 @@ management:
       exposure:
         include: health,info
 
+kafka:
+  enabled: false
+  bootstrap-servers: kafka:9092
+  topic:
+    devices: devices.events
+
 ---
 spring:
   config:
     activate:
       on-profile: docker
-  # In Docker, the DB hostname is the service name 'java-db'
   datasource:
     url: jdbc:postgresql://java-db:5432/devicesdb
     username: devices
     password: devices
+
+---
+spring:
+  config:
+    activate:
+      on-profile: kafka
+
+kafka:
+  enabled: true
+

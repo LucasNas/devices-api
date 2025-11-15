@@ -1,6 +1,7 @@
 services:
   java-db:
     image: postgres:16-alpine
+    container_name: java-db-local
     environment:
       POSTGRES_DB: devicesdb
       POSTGRES_USER: devices
@@ -11,7 +12,9 @@ services:
       - java_dbdata:/var/lib/postgresql/data
 
   java-app:
-    build: .
+    build:
+      context: .
+    container_name: java-app-local
     depends_on:
       - java-db
     environment:

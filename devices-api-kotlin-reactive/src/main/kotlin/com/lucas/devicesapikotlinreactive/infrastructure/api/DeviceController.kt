@@ -4,6 +4,7 @@ import com.lucas.devicesapikotlinreactive.application.service.DeviceService
 import com.lucas.devicesapikotlinreactive.domain.model.DeviceState
 import com.lucas.devicesapikotlinreactive.infrastructure.api.dto.DeviceRequest
 import com.lucas.devicesapikotlinreactive.infrastructure.api.dto.DeviceResponse
+import com.lucas.devicesapikotlinreactive.infrastructure.api.mapper.DeviceMapper
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -19,8 +20,11 @@ class DeviceController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@Valid @RequestBody req: DeviceRequest): Mono<DeviceResponse> =
-        service.create(DeviceMapper.toDomain(req))
-            .map(DeviceMapper::toResponse)
+        service.create(
+            name = req.name,
+            brand = req.brand,
+            state = req.state
+        ).map(DeviceMapper::toResponse)
 
     @GetMapping("/{id}")
     fun get(@PathVariable id: Long): Mono<DeviceResponse> =

@@ -5,13 +5,15 @@ spring:
 server:
   port: 8081
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+kafka:
 
-# Default: local IDE run (DB via localhost:5433)
+  bootstrap-servers: kafka:9092
+  topic:
+    devices: devices.events
+
+  enabled: false
+
+
 ---
 spring:
   config:
@@ -29,7 +31,13 @@ spring:
     user: devices
     password: devices
 
-# Docker profile: DB hostname is 'kotlin-db'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+
 ---
 spring:
   config:
@@ -46,4 +54,12 @@ spring:
     url: jdbc:postgresql://kotlin-db:5432/devicesdb_rx
     user: devices
     password: devices
-    enabled: true    # keep off in docker for now so it doesn't crash
+
+---
+spring:
+  config:
+    activate:
+      on-profile: kafka
+
+kafka:
+  enabled: true

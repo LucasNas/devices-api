@@ -8,6 +8,7 @@ import com.lucas.devicesapikotlinreactive.infrastructure.database.repository.Dev
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.util.UUID
 
 @Component
 class DeviceRepositoryAdapter(
@@ -31,6 +32,9 @@ class DeviceRepositoryAdapter(
 
     override fun delete(id: Long): Mono<Void> =
         repo.deleteById(id)
+
+    override fun findByExternalId(externalId: UUID): Mono<Device> =
+        repo.findByExternalId(externalId).map { it.toDomain() }
 }
 
 private fun Device.toEntity() =
