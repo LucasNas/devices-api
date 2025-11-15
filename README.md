@@ -176,7 +176,7 @@ Topic used:
 devices.events
 ```
 
-- **Java MVC app:** publishes events on device creation
+- **Java MVC app:** publishes events and also consumes them
 - **Kotlin Reactive app:** publishes events and also consumes them, capable of upserting devices based on incoming events
 
 ---
