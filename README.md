@@ -185,9 +185,10 @@ devices.events
 
 ### Java MVC:
 
+- Controller tests with WebTestClient
 - Service tests
 - Exception handler tests
-- Kafka publisher tests
+- Kafka listener & publisher tests
 - Domain/model tests
 
 ### Kotlin Reactive:
