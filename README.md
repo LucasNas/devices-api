@@ -203,9 +203,10 @@ devices.events
 
 # 🔗 Swagger Documentation
 
-| Service          | URL                                   |
-|------------------|---------------------------------------|
-| Java MVC App     | http://localhost:8080/swagger-ui.html |
-| Kotlin Reactive  | http://localhost:8081/swagger-ui.html |
+| Service             | Swagger UI URL                              | OpenAPI JSON URL                       |
+|---------------------|----------------------------------------------|-----------------------------------------|
+| Java MVC App        | http://localhost:8080/swagger-ui.html        | http://localhost:8080/v3/api-docs       |
+| Kotlin Reactive App | http://localhost:8081/swagger-ui.html        | http://localhost:8081/v3/api-docs       |
+
 
 ---
