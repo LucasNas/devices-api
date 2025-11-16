@@ -98,11 +98,9 @@ Each service supports:
 │   ├── Dockerfile
 │   └── README.md
 │
-├── postman-bruno-collections/
-│   ├── devices-api-java-mvc.postman_collection.json
-│   ├── devices-api-kotlin-reactive.postman_collection.json
-│   ├── devices-api-java-mvc.bru
-│   └── devices-api-kotlin-reactive.bru
+├── collections/
+│   ├── postman/
+│   └── bruno/
 │
 ├── docker-compose.yml
 └── README.md
