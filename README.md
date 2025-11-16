@@ -212,20 +212,12 @@ Each app includes rules to avoid infinite loops (origin field).
 Inside:
 
 ```
-/postman-bruno-collections
+/collections
 ```
-
-You will find:
-
-- `devices-api-java-mvc.postman_collection.json`
-- `devices-api-kotlin-reactive.postman_collection.json`
-- `devices-api-java-mvc.bru`
-- `devices-api-kotlin-reactive.bru`
 
 These collections include:
 - All CRUD endpoints
 - Filters
-- Kafka-triggering operations
 
 ---
 
