@@ -26,8 +26,6 @@ class DeviceService(
             }
     }
 
-
-
     fun get(id: Long): Mono<Device> =
         repo.findById(id)
             .switchIfEmpty(Mono.error(NotFoundException("Device $id not found")))
@@ -40,15 +38,37 @@ class DeviceService(
 
     fun updateFull(id: Long, incoming: Device): Mono<Device> =
         get(id).flatMap { existing ->
+            // Domain rule: name/brand cannot be changed if IN_USE
+            if (existing.state == DeviceState.IN_USE &&
+                (existing.name != incoming.name || existing.brand != incoming.brand)
+            ) {
+                return@flatMap Mono.error<Device>(
+                    IllegalStateException("Name and brand cannot be updated when device is in use")
+                )
+            }
+
             val updated = existing.copy(
                 name = incoming.name,
                 brand = incoming.brand,
                 state = incoming.state
+                // externalId and creationTime are preserved
             )
+
             repo.save(updated)
         }
 
-    fun delete(id: Long): Mono<Void> = repo.delete(id)
+    fun delete(id: Long): Mono<Void> =
+        get(id).flatMap { existing ->
+            // Domain rule: IN_USE devices cannot be deleted
+            if (existing.state == DeviceState.IN_USE) {
+                return@flatMap Mono.error<Void>(
+                    IllegalStateException("Cannot delete device that is in use")
+                )
+            }
+            repo.delete(existing.id
+                ?: return@flatMap Mono.error(IllegalStateException("Cannot delete device without id"))
+            )
+        }
 
     fun upsertByExternalId(fromEvent: Device): Mono<Device> =
         repo.findByExternalId(fromEvent.externalId)
@@ -57,6 +77,7 @@ class DeviceService(
                     name = fromEvent.name,
                     brand = fromEvent.brand,
                     state = fromEvent.state
+                    // externalId & creationTime preserved
                 )
                 repo.save(updated)
             }
