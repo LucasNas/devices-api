@@ -70,7 +70,7 @@ Each service supports:
 ### ✔ Read devices individually or filtered
 ### ✔ Full update (with rules)
 ### ✔ Delete device (with rules)
-### ✔ Synchronization over Kafka across both apps
+### ✔ Partial synchronization over Kafka across both apps
 
 ### Key Domain Rules
 
