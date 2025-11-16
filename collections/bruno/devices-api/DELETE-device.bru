@@ -1,0 +1,15 @@
+meta {
+  name: DELETE-device
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/api/devices/{{deviceId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

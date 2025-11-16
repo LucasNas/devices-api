@@ -1,0 +1,24 @@
+meta {
+  name: PUT-update-device
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/devices/{{deviceId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "name": "Updated Phone",
+      "brand": "Apple",
+      "state": "IN_USE"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

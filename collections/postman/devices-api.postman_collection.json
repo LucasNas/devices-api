@@ -1,0 +1,187 @@
+{
+  "info": {
+    "name": "Devices API",
+    "_postman_id": "a4f9f5aa-0000-1111-2222-333344445555",
+    "description": "Collection to test Devices API (Java MVC on 8080 or Kotlin Reactive on 8081). Set baseUrl accordingly.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create device",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Phone\",\n  \"brand\": \"Apple\",\n  \"state\": \"AVAILABLE\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/devices",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get device by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/devices/{{deviceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices",
+            "{{deviceId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all devices",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/devices",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get devices by brand",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/devices?brand={{brand}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices"
+          ],
+          "query": [
+            {
+              "key": "brand",
+              "value": "{{brand}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get devices by state",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/devices?state={{state}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices"
+          ],
+          "query": [
+            {
+              "key": "state",
+              "value": "{{state}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update device (full)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated Phone\",\n  \"brand\": \"Apple\",\n  \"state\": \"IN_USE\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/devices/{{deviceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices",
+            "{{deviceId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete device",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/devices/{{deviceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "devices",
+            "{{deviceId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "deviceId",
+      "value": "1"
+    },
+    {
+      "key": "brand",
+      "value": "Apple"
+    },
+    {
+      "key": "state",
+      "value": "AVAILABLE"
+    }
+  ]
+}

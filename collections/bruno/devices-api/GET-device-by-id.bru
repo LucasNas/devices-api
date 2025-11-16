@@ -1,0 +1,15 @@
+meta {
+  name: GET-device-by-id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/devices/{{deviceId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

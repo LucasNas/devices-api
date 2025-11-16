@@ -1,0 +1,19 @@
+meta {
+  name: GET-devices-by-brand
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/devices?brand={{brand}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  brand: {{brand}}
+}
+
+settings {
+  encodeUrl: true
+}

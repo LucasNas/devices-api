@@ -1,0 +1,19 @@
+meta {
+  name: GET-devices-by-state
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/devices?state={{state}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  state: {{state}}
+}
+
+settings {
+  encodeUrl: true
+}
