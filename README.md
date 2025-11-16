@@ -7,77 +7,78 @@ This repository contains **two independent backend services** implementing a Dev
 
 Both services include:
 
-- CRUD operations for Device entities
-- Domain rule enforcement
+- CRUD operations
+- Business rules & domain constraints
 - PostgreSQL persistence
-- Kafka event publishing/consuming
+- Kafka event publishing and consuming
 - Swagger/OpenAPI documentation
 - Extensive unit tests
-- Docker & Docker Compose support
+- Docker + Docker Compose support
 
 ---
 
 # 🚀 Recommended Way to Run the Entire System
 
-The **primary and recommended method** to run the whole stack (both apps + PostgreSQL + Kafka + ZooKeeper) is via **Docker Compose**.
+The **primary method** to run both applications together (including PostgreSQL, Kafka, ZooKeeper) is:
 
-Because the Dockerfiles expect pre-built JARs (`target/*.jar` and `build/libs/*.jar`), you must first **build both applications locally**, then run Compose.
+## ✅ 1. Build both services first (required)
 
-### 1️⃣ Build the Java MVC app
-
-```bash
+### Java MVC app
+```
 cd devices-api-java-mvc
 ./mvnw clean package
 cd ..
 ```
 
-### 2️⃣ Build the Kotlin reactive app
-
-```bash
+### Kotlin Reactive app
+```
 cd devices-api-kotlin-reactive
 ./gradlew build
 cd ..
 ```
 
-### 3️⃣ Start the full stack with Docker Compose (from repo root)
+## ✅ 2. Start the entire stack
+From the **root folder**:
 
-```bash
+```
 docker compose up --build
 ```
 
-This command:
+This brings up:
 
-- Uses the already-built JARs
-- Builds lightweight runtime images for both apps
-- Starts Kafka + ZooKeeper
-- Starts PostgreSQL
-- Starts both services on different ports
+- PostgreSQL
+- ZooKeeper
+- Kafka broker
+- Java MVC service (port **8080**)
+- Kotlin Reactive service (port **8081**)
 
-| Service           | Port  | Swagger URL                                |
-|-------------------|-------|--------------------------------------------|
-| Java MVC App      | 8080  | http://localhost:8080/swagger-ui.html      |
-| Kotlin Reactive   | 8081  | http://localhost:8081/swagger-ui.html      |
+### Swagger URLs
+
+| Service | Swagger UI | OpenAPI JSON |
+|---------|------------|--------------|
+| Java MVC | http://localhost:8080/swagger-ui.html | http://localhost:8080/v3/api-docs |
+| Kotlin Reactive | http://localhost:8081/swagger-ui.html | http://localhost:8081/v3/api-docs |
 
 ---
 
 # 📘 Project Overview
 
-A device management system supporting:
+A device management backend with two independent services (MVC & Reactive).  
+Each service supports:
 
-- Creation of devices
-- Full updates
-- Deletion (unless `IN_USE`)
-- Filtering by brand/state
-- Kafka-based event propagation
-- Reactive processing (Kotlin app)
+### ✔ Create devices
+### ✔ Read devices individually or filtered
+### ✔ Full update (with rules)
+### ✔ Delete device (with rules)
+### ✔ Synchronization over Kafka across both apps
 
-### Domain rules enforced:
+### Key Domain Rules
 
-- `creationTime` cannot be changed
-- Devices in `IN_USE` **cannot**:
-    - change name
-    - change brand
-    - be deleted
+| Rule | Description |
+|------|-------------|
+| Immutable fields | `externalId` and `creationTime` never change |
+| Forbidden updates | Device in `IN_USE` **cannot change name or brand** |
+| Forbidden deletion | Device in `IN_USE` **cannot be deleted** |
 
 ---
 
@@ -85,15 +86,23 @@ A device management system supporting:
 
 ```
 .
-├── devices-api-java-mvc/              
+├── devices-api-java-mvc/
 │   ├── src/main/java
 │   ├── src/test/java
+│   ├── Dockerfile
 │   └── README.md
 │
-├── devices-api-kotlin-reactive/       
+├── devices-api-kotlin-reactive/
 │   ├── src/main/kotlin
 │   ├── src/test/kotlin
+│   ├── Dockerfile
 │   └── README.md
+│
+├── postman-bruno-collections/
+│   ├── devices-api-java-mvc.postman_collection.json
+│   ├── devices-api-kotlin-reactive.postman_collection.json
+│   ├── devices-api-java-mvc.bru
+│   └── devices-api-kotlin-reactive.bru
 │
 ├── docker-compose.yml
 └── README.md
@@ -103,111 +112,120 @@ A device management system supporting:
 
 # 🔧 Technologies Used
 
-| Category        | Java MVC App                   | Kotlin Reactive App             |
-|----------------|--------------------------------|---------------------------------|
-| Language       | Java 21                        | Kotlin 1.9                      |
-| Framework      | Spring Boot MVC                | Spring Boot WebFlux             |
-| Database       | PostgreSQL + JPA/Hibernate     | PostgreSQL + R2DBC              |
-| Migrations     | Flyway                         | Liquibase                       |
-| Messaging      | Kafka Producer + Listener      | Kafka Producer + Listener       |
-| Documentation  | Springdoc OpenAPI              | Springdoc OpenAPI               |
-| Testing        | JUnit 5 + Mockito              | JUnit 5 + MockK + StepVerifier  |
+| Category | Java MVC App | Kotlin Reactive App |
+|----------|--------------|----------------------|
+| Language | Java 21 | Kotlin 1.9 |
+| Framework | Spring Boot MVC | Spring Boot WebFlux |
+| Database | PostgreSQL + JPA | PostgreSQL + R2DBC |
+| Migrations | Flyway | Liquibase |
+| Messaging | Kafka Producer/Consumer | Kafka Producer/Consumer |
+| Testing | JUnit 5, Mockito | JUnit 5, MockK, StepVerifier |
+| Docs | Springdoc OpenAPI | Springdoc OpenAPI |
 
 ---
 
-# 🗄️ Database Migrations
+# 🗄 Database Migrations
 
-- **Java MVC App:** Flyway migrations  
-  Location:  
+- **Flyway (Java MVC)**  
   `devices-api-java-mvc/src/main/resources/db/migration`
 
-- **Kotlin Reactive App:** Liquibase changelogs  
-  Location:  
+- **Liquibase (Kotlin Reactive)**  
   `devices-api-kotlin-reactive/src/main/resources/db/changelog`
 
 ---
 
-# ▶️ Running Services Individually (Optional, Without Docker)
+# ▶️ Running Each App Individually (Optional)
 
-You can also run each service locally without Docker.
-
-## 📦 Java MVC App
+## Java MVC
 
 ### Build
-
-```bash
+```
 cd devices-api-java-mvc
 ./mvnw clean package
 ```
 
 ### Run
-
-```bash
+```
 ./mvnw spring-boot:run
 ```
 
-App runs on: `http://localhost:8080`
+Runs on `http://localhost:8080`
 
 ---
 
-## ⚡ Kotlin Reactive App
+## Kotlin Reactive
 
 ### Build
-
-```bash
+```
 cd devices-api-kotlin-reactive
 ./gradlew build
 ```
 
 ### Run
-
-```bash
+```
 ./gradlew bootRun
 ```
 
-App runs on: `http://localhost:8081`
+Runs on `http://localhost:8081`
 
 ---
 
 # 📡 Kafka Event Flow
 
-Topic used:
-```text
+Topic:
+```
 devices.events
 ```
 
-- **Java MVC app:** publishes events and also consumes them.
-- **Kotlin Reactive app:** publishes events and also consumes them.
+Both apps:
+
+- **Publish** on device created
+- **Consume** events from the other app
+- **Mirror** the device locally (upsert by externalId)
+
+Each app includes rules to avoid infinite loops (origin field).
 
 ---
 
 # 🧪 Testing Summary
 
-### Java MVC:
-
-- Controller tests with WebTestClient
-- Service tests
+### Java MVC
+- Controller layer tests (MockMvc)
+- Service tests with Mockito
+- Kafka listener tests
+- Kafka publisher tests
 - Exception handler tests
-- Kafka listener & publisher tests
-- Domain/model tests
+- Domain and mapping tests
 
-### Kotlin Reactive:
-
-- Controller tests with WebTestClient
-- Reactive service tests (Mono/Flux)
+### Kotlin Reactive
+- Controller tests (WebTestClient)
+- Service tests (MockK + StepVerifier)
 - Repository adapter tests
-- Kafka listener & publisher tests
+- Kafka listener tests
+- Kafka publisher tests
 - Domain + mapper tests
-- Event mapping tests
 
 ---
 
-# 🔗 Swagger Documentation
+# 📂 API Collections (Postman & Bruno)
 
-| Service             | Swagger UI URL                              | OpenAPI JSON URL                       |
-|---------------------|----------------------------------------------|-----------------------------------------|
-| Java MVC App        | http://localhost:8080/swagger-ui.html        | http://localhost:8080/v3/api-docs       |
-| Kotlin Reactive App | http://localhost:8081/swagger-ui.html        | http://localhost:8081/v3/api-docs       |
+Inside:
 
+```
+/postman-bruno-collections
+```
+
+You will find:
+
+- `devices-api-java-mvc.postman_collection.json`
+- `devices-api-kotlin-reactive.postman_collection.json`
+- `devices-api-java-mvc.bru`
+- `devices-api-kotlin-reactive.bru`
+
+These collections include:
+- All CRUD endpoints
+- Filters
+- Kafka-triggering operations
 
 ---
+
